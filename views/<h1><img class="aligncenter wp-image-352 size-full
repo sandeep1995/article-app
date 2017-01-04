@@ -1,0 +1,415 @@
+<h1><img class="aligncenter wp-image-352 size-full" src="https://sandeepacharya.in/wp-content/uploads/2017/01/NODEJS-EXPRESSJS-MONGODB-APP.png" alt="NODEJS EXPRESS MONGODB APPLICATION" width="560" height="315" /></h1>
+This tutorial is written specifically for people who are planning to learn Nodejs. You may have programmed in PHP before, and willing to start your career in nodejs, then It will surely help you. I will try my best to explain you each thing in detail. We will learn about nodejs, expressjs, mongodb, mongoose, nodemon etc.
+
+If you are new to programming then it is also fine. Grab some coffee and stay with me.
+<h2>Our Application</h2>
+We are going to build a super duper simple application where people can save an article with a heading. In our application people also can view all the previous posted articles.
+<h2>Things we need before starting</h2>
+<ol>
+ 	<li>Nodejs</li>
+ 	<li>MongoDB</li>
+ 	<li>A text editor</li>
+</ol>
+<h2>Installing NodeJs</h2>
+First, go to Nodejs's website <a href="https://nodejs.org/en/">https://nodejs.org/en/</a> and click on the download button. Click on the LTS version of the Node. The process is pretty simple. You just need to click next bunch of times. Nodejs will be installed in your system. The process is same for all the major operating systems.
+<h3>Verify Nodejs Installation</h3>
+Just open a terminal and type this code and hit enter. You will see your nodejs's version by this.
+
+<span class="lang:default decode:true crayon-inline">node -v </span>
+
+By installing node, you will automatically get access to the node's package manager npm. Npm comes with nodejs.
+
+You can check your npm version with this following command. We will use <span class="lang:default decode:true crayon-inline ">npm</span> a lot in building nodejs apps.
+
+<span class="lang:default decode:true crayon-inline ">npm -v</span>
+<h2>Install MongoDB</h2>
+MongoDB is our server to save our data. The process is same as above. Visit  <a href="https://www.mongodb.com/download-center">https://www.mongodb.com/download-center</a> and choose your operating system.
+<h2>Run MongoDB</h2>
+After installing MongoDB, we need to start our MongoDB. So open a new terminal (for windows open a command prompt window), and type <span class="lang:default decode:true crayon-inline ">mongod</span>
+
+Keep this window open. We need to keep it open while we are developing our application.
+<h1>Let's get started with our Node Express App</h1>
+We are done with our development setup. These things are mandatory to build a build a web application or a RESTful API with nodejs.
+
+Now open another terminal window. <strong>Do not close the previous mongod window. </strong>You might now know, we are going to use an extremely popular nodejs web application framework, Expressjs.
+
+Now we need to install <a href="http://expressjs.com/en/starter/generator.html">express generator</a> globally. To do this, run the following command
+<pre class="lang:default decode:true">npm install express-generator -g
+</pre>
+Now we can use the <span class="lang:default decode:true crayon-inline ">express</span> command to generate our project.
+<h2>Generating our project with express</h2>
+Here we will tell express to generate a project named "article-app" with the templating engine "ejs"
+<pre class="lang:default decode:true ">express article-app --view=ejs</pre>
+Now you will see a folder named article-app has been created. Now change your directory to this article app and run <span class="lang:default decode:true crayon-inline ">npm install</span>  to install all the dependency packages we need. You might need to run <span class="lang:default decode:true crayon-inline">sudo npm isntall</span> if you see permission denied message.
+<pre class="lang:sh decode:true">sandeep@emon:~/projects$ express article-app --view=ejs
+
+   create : article-app
+   create : article-app/package.json
+   create : article-app/app.js
+   create : article-app/public
+   create : article-app/public/stylesheets
+   create : article-app/public/stylesheets/style.css
+   create : article-app/routes
+   create : article-app/routes/index.js
+   create : article-app/routes/users.js
+   create : article-app/views
+   create : article-app/views/index.ejs
+   create : article-app/views/error.ejs
+   create : article-app/bin
+   create : article-app/bin/www
+
+   install dependencies:
+     $ cd article-app &amp;&amp; npm install
+
+   run the app:
+     $ DEBUG=article-app:* npm start
+
+   create : article-app/public/javascripts
+   create : article-app/public/images
+sandeep@emon:~/projects$ cd aricle-app
+sandeep@emon:~/projects/article-app$ npm install</pre>
+<h2>Are you tired?</h2>
+You might feel tired now as to get started you need to do a lot of things. But that is fine. As you are just starting, it will be lot easier when you will grasp the concept behind nodejs applications.
+
+After running <span class="lang:default decode:true crayon-inline">npm install</span> , you just installed all the dependencies mentioned in our <span class="lang:default decode:true crayon-inline ">package.json</span>  file.
+
+This package.json file holds all the necessary information about our web applications. You can read more about this <a href="https://docs.npmjs.com/files/package.json">here.</a>
+<h2>The Folder Structure of the ExpressJs App</h2>
+<pre class="lang:default decode:true" title="Folder Structure">├── app.js
+├── bin
+│   └── www
+├── package.json
+├── public
+│   ├── images
+│   ├── javascripts
+│   └── stylesheets
+│       └── style.css
+├── routes
+│   ├── index.js
+│   └── users.js
+└── views
+    ├── error.ejs
+    └── index.ejs
+</pre>
+Let's discuss the folder structure. The heart of our app is the <strong>app.js </strong>file. You will see another folder named <strong>node_modules. </strong>This folder contains all the dependency code of our application. You never need to open this folder while developing.
+<h3>Run the application</h3>
+To run our web application type <span class="lang:default decode:true crayon-inline ">npm start</span> in the terminal and go to <a href="http://localhost:3000/">http://localhost:3000/</a>  You should see a image like this one. If not then recheck all the previous steps.
+
+<img class="size-medium wp-image-349" src="https://sandeepacharya.in/wp-content/uploads/2017/01/blog1-300x147.png" alt="express app" width="300" height="147" />
+<h3>Begin Coding</h3>
+Open the folder <strong>article-app </strong>in your favourite text editor and begin coding. Open <strong>app.js </strong>file. It may seem quite heavy for you. But it is not.
+<pre class="font:monospace lang:js decode:true">var express = require('express');</pre>
+With this <strong>require</strong> method, we are including <strong>express module</strong> into our project. If you open the<strong> package.</strong>json file, you will see
+
+all the dependencies are listed there.
+<pre class="lang:default decode:true">"dependencies": {
+ "body-parser": "~1.15.2",
+ "cookie-parser": "~1.4.3",
+ "debug": "~2.2.0",
+ "ejs": "~2.5.2",
+ "express": "~4.14.0",
+ "morgan": "~1.7.0",
+ "serve-favicon": "~2.3.0"
+}</pre>
+To properly include a dependency in your project, the module must be declared in your package.json file and then you should run npm install in your terminal. After that, we can require that module into our project.
+
+Remember we just run one npm install, in the beginning, thus we installed all of our modules. It is now properly downloaded into our <strong>node_modules</strong> folder. Let's install one package we need now to query and connect with our database MongoDB. The name of the package/module is <strong>mongoose</strong>.
+<h2>Installing mongoose via terminal</h2>
+Run this command into your terminal at the root of your project. Please open a new terminal at the root of your project.
+<pre class="lang:sh decode:true ">sandeep@emon:~/projects/article-app$ npm install mongoose --save</pre>
+We are telling npm to install mongoose package and also instructing to write it as an dependency into our package.json. If you now open package.json, you will notice that mongoose has been included there.
+
+Lets modify our home page. Open <strong>views/index.ejs </strong>file. Paste the following code. I expect you that you know html.
+<pre class="whitespace-before:1 whitespace-after:1 lang:default decode:true">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;&lt;%= title %&gt;&lt;/title&gt;
+    &lt;link rel='stylesheet' href='/stylesheets/style.css' /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;&lt;%= title %&gt;&lt;/h1&gt;
+   &lt;form&gt;
+   &lt;p&gt;
+   Name: &lt;input type="text" name="name" placeholder="please type your name here" id="name"&gt;&lt;/p&gt;
+
+   &lt;p&gt;
+   Post: &lt;input type="text" name="article" placeholder="article a text" id="article"&gt;
+
+   &lt;/p&gt;
+
+   &lt;button id="submitBtn"&gt;Save&lt;/button&gt;
+   &lt;/form&gt;
+
+   &lt;script src="/javascripts/script.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+You can see we are including one <strong>JavaScript file </strong>and <strong>css file. </strong>So you go to <strong>public/stylesheets/style.css </strong>and add these below code. I know its looking extremely bad. You can do your own styling.
+<pre class="lang:css decode:true ">input {
+  padding: 1em;
+  margin: 1em;
+}
+
+button {
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  background-color: #67cc89;
+  color: white;
+}</pre>
+Now you should understand that anything in our public directory, we have it in our views files. We included our script file
+<pre class="whitespace-before:1 whitespace-after:1 lang:default decode:true">&lt;script src="/javascripts/script.js"&gt;&lt;/script&gt;</pre>
+So let's open the <strong>public/javascripts </strong>folder, and create a file named <strong>script.js</strong>
+
+Refresh the page at  <a href="http://localhost:3000/">http://localhost:3000/</a>, you should see like this below image.
+
+<img class="aligncenter wp-image-358 size-full" src="https://sandeepacharya.in/wp-content/uploads/2017/01/blog2.png" alt="Express Nodejs app" width="698" height="393" />
+<h2>Understanding app.js file</h2>
+Actually we are telling express to serve the <strong>public</strong> folder as our static assets in our <strong>app.js</strong> file. We are doing through this. The code is already written by express generator for you.
+<pre class="lang:js decode:true" title="app.js">app.use(express.static(path.join(__dirname, 'public')));</pre>
+Now we will connect with our database using <strong>mongoose</strong>
+<h2>Connecting with MongoDb using mongoose</h2>
+In the app.js file include these lines just after the requiring the body-parser
+<pre class="lang:default decode:true">....
+var bodyParser = require('body-parser');
+
+// Require Mongoose and connecting with the mongoDb
+
+var mongoose = require('mongoose');
+mongoose.connect("mongodb://127.0.0.1:27017/article", function(err) {
+if (err) {
+console.log(err);
+}
+});
+
+....</pre>
+Remember that initially, we started our <strong>mongod. </strong>Now we are connecting with our local MongoDB. Generally, MongoDB runs on the port 27017.
+<pre class="lang:default decode:true">mongodb://127.0.0.1:27017/article
+</pre>
+Look at the connection string, with this, we are automatically creating one database named <strong>article.</strong>
+
+Now we will create our <strong>Posts collection </strong>in our <strong>article database</strong>. A collection in MongoDB is similar to a table in SQL database.
+<h2>Creating our Schema and Model using Mongoose</h2>
+Using mongoose we are going to declare some rules which are called schema of our Posts collection.
+
+Create <strong>models/Post.js </strong>and paste the following
+<pre class="lang:default decode:true " title="Post.js">var mongoose = require('mongoose');
+
+var PostSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    article: String,
+    timestamp: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+module.exports = mongoose.model("Post", PostSchema);</pre>
+The code is quite self-explanatory. We are giving the structure to our collection. Each document of the Post collection will have three fields those are name, article, timestamp.
+<h1>Creating our first REST API endpoint</h1>
+Now we are going to create one end point to save our data into our database. To do that please open your <strong>routes/index.js </strong>file. Your index.js file should now like this.
+<pre class="lang:default decode:true">var express = require('express');
+var router = express.Router();
+
+var Post = require('../models/Post');
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
+
+module.exports = router;</pre>
+Let's change the title of our home page. Just change index.js file to this.
+<pre class="lang:default decode:true">var express = require('express');
+var router = express.Router();
+
+var Post = require('../models/Post');
+
+// here we are saying to display the views/index.ejs file 
+// whenever we visit -&gt; localhsot:3000/ 
+// We can also send data as a second parameter of the res.render method
+
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Article App' });
+});
+
+module.exports = router;</pre>
+Now if we refresh our page in the browser, <strong>we will not see any change. Because we have changed our code on the server side. So we need to restart our node server. You can do this by stopping the terminal (the terminal you ran npm start) by Ctrl+C</strong>
+
+Then you need to run the server again by npm start. Now you should see that the tile of the app has been changed to "Article App"
+<h2>Installing Nodemon using npm (Node Monitor)</h2>
+It is irritating to restart our server each time when we make changes to our server code. So we are going to install a package called <strong>nodemon</strong> globally. Nodemon will intelligently restart our server whenever we make changes to it.
+<pre class="lang:default decode:true ">npm install nodemon -g
+</pre>
+As we installed it with the global flag. The command <span class="lang:default decode:true crayon-inline ">nodemon</span> is accessible throughout our system. Now we will start our server with nodemon.
+
+Run the <strong>nodemon</strong> command in the root of your project
+<pre class="lang:default decode:true ">sandeep@emon:~/projects/article-app$ nodemon
+[nodemon] 1.11.0
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching: *.*
+[nodemon] starting `node ./bin/www`</pre>
+You should see the result like this one. Now we can refresh our web page and work without restarting the server. the work will be done by nodemon.
+
+Now add this code just after the home page get route. Please read the comments.
+<pre class="lang:js decode:true">router.post('/save', function(req, res) {
+  // The data comimg from the client is situated in the "req" object
+  // We can send or render data to the client using "res" object
+
+  // the data we got from the client will be in the req.body
+  // we also have properties of req like req.params and req.query
+  var data = req.body;
+
+  // lets create one document with requested data in the Post collection
+  // We alredy included the Post collection's model in the Top 
+  // I am talking about this line -&gt; var Post = require('../models/Post');
+
+  var post = new Post(data);
+
+  // Lets save the post
+  post.save(function(err) {
+    // If any error happens while saving,
+    // we will return saying an error message
+      if (err) {
+        return res.json({
+        error: true,
+        message: "Unable to save the post",
+        err: err
+      });
+    }
+
+    // otherwise perfectly saved
+
+    res.json({
+      error: false,
+      message: "Article Saved"
+    });
+    
+  })
+
+});
+
+module.exports = router;</pre>
+Basically, here we are getting the data from the client and trying to save to save to the Post collection of our ariticle database.
+<h2>Let's make post request from client using Fetch</h2>
+We are going to use <a href="https://developer.mozilla.org/en/docs/Web/API/Fetch_API">HTML5 Fetch API</a> to do our post request. We are not going to use old <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XLMHttpRequest</a>.
+
+To do this open, <strong>public/javascrpts/script.js and add the following code</strong>
+<pre class="lang:js decode:true">function select(elem) {
+    return document.querySelector(elem);
+}
+
+var submitBtn = select("#submitBtn");
+
+submitBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    var name = select("#name");
+    var article = select("#article");
+    // Simple error checking
+    if (name.value == '' || article.value == '') {
+        return;
+    }
+
+    // making our data ready
+    var data = {
+        name: name.value,
+        article: article.value
+    };
+    data = JSON.stringify(data);
+
+    // here we are using brand new in build fetch method to do a POST request
+    // Forget XHR :)
+    fetch("/save", {
+        method: "POST",
+        body: data,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(function (res) {
+        return res.json();
+    }).then(function (res) {
+        console.log(res);
+        if (!res.error) {
+            name.value = '';
+            article.value = '';
+        }
+        alert(res.message);
+        window.location.reload();
+    })
+});
+
+</pre>
+Now go to your web page and refresh. Open the <a href="https://developers.google.com/web/tools/chrome-devtools/console/">dev console</a>. Write your name and article and hit the save button.
+
+You should see a message saying
+
+<span class="lang:default decode:true crayon-inline">{error: false, message: "Article Saved"}</span>
+
+If not, then let me know in the comments section. I will surely help you out.
+<h2>Congratulations!</h2>
+You are able to send data from the client side. Your nodejs server getting that data from the client. You are saving it to the MongoDB. That is wonderful.
+
+Let's display the data. To do this we need little bit modification in <strong>routes/index.js </strong> file and in <strong>views/index.ejs</strong> file.
+<h3>Serving the data from the server to the client</h3>
+Open routues/index.js and change the according to the following code.
+
+We will query the database in our get method of the homepage and send all the data to the client. We will do it before rendering. As I said earlier, in the <strong>render</strong> method, we can pass data as the second argument. That data will be available in our views/index.ejs file.
+<pre class="lang:default decode:true ">router.get('/', function(req, res, next) {
+  // We are querying the Post collection
+  // As we need the all the data, we are passing a black object {} for querying
+  Post.find({}, function(err, posts) {
+    res.render('index', { title: 'Article App', posts: posts });
+  });
+});</pre>
+<h2>Understanding EJS templating</h2>
+Open <strong>views/index.ejs</strong> file and modify it like below. You can write <strong>EJS </strong>in between <span class="lang:default decode:true crayon-inline">&lt;% // your ejs code %&gt;</span>
+I chose EJS as the templating engine because you can write javascript here. You do not need to learn a separate templating engine to get started with nodejs.
+
+Below we are checking if the posts data is available. If it is available then we looping over the content of the posts.
+<pre class="lang:default decode:true ">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;&lt;%= title %&gt;&lt;/title&gt;
+    &lt;link rel='stylesheet' href='/stylesheets/style.css' /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;&lt;%= title %&gt;&lt;/h1&gt;
+
+    &lt;% if (posts.length &gt; 0) { %&gt;
+
+    &lt;h3&gt;Articles&lt;/h3&gt;
+        &lt;% posts.forEach(function (post) { %&gt;
+
+          &lt;p&gt;
+            Name: &lt;%= post.name %&gt;
+          &lt;/p&gt;
+          &lt;p&gt;
+            Article: &lt;%= post.article %&gt;
+          &lt;/p&gt;
+          &lt;hr&gt;
+        &lt;% }) %&gt;
+    &lt;% } %&gt;
+   &lt;form&gt;
+   &lt;p&gt;
+   Name: &lt;input type="text" name="name" placeholder="please type your name here" id="name"&gt;&lt;/p&gt;
+
+   &lt;p&gt;
+   Post: &lt;input type="text" name="article" placeholder="article a text" id="article"&gt;
+
+   &lt;/p&gt;
+
+   &lt;button id="submitBtn"&gt;Save&lt;/button&gt;
+   &lt;/form&gt;
+
+   &lt;script src="/javascripts/script.js"&gt;&lt;/script&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+Now if you refresh our web page, we can add our posts. Mine looks like this.
+
+&nbsp;
